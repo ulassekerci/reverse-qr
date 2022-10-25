@@ -51,7 +51,7 @@ const ID: NextPage = () => {
       {status === 2 && (
         <div className='flex flex-col items-center'>
           <span className='text-4xl font-bold m-6 mt-16'>An Error Ocurred</span>
-          <span className='text-xl font-bold'>you can try sending again</span>
+          <span className='text-xl font-bold'>try sending again</span>
         </div>
       )}
     </div>

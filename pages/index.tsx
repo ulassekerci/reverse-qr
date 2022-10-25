@@ -2,7 +2,6 @@ import type { InferGetServerSidePropsType } from 'next'
 import { useEffect, useState } from 'react'
 import QRCode from 'react-qr-code'
 import { nanoid } from 'nanoid'
-import { useRouter } from 'next/router'
 
 export const getServerSideProps = async () => {
   return {
@@ -23,7 +22,7 @@ const Home = ({ id }: InferGetServerSidePropsType<typeof getServerSideProps>) =>
 
   useEffect(() => {
     setDomain(window.location.href)
-    const update = setInterval(check, 3000)
+    const update = setInterval(check, 5000)
     return () => clearInterval(update)
   }, [])
 
@@ -31,7 +30,7 @@ const Home = ({ id }: InferGetServerSidePropsType<typeof getServerSideProps>) =>
     <div className='text-slate-700'>
       <div className='flex flex-col items-center'>
         <span className='text-4xl font-bold m-8 mb-12'>Scan The QR Code</span>
-        {domain && <QRCode value={window.location.href + id} />}
+        {domain && <QRCode value={domain + id} />}
       </div>
     </div>
   )
