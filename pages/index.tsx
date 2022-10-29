@@ -2,6 +2,8 @@ import type { InferGetServerSidePropsType } from 'next'
 import { useEffect, useState } from 'react'
 import QRCode from 'react-qr-code'
 import { nanoid } from 'nanoid'
+import { io, Socket } from 'socket.io-client'
+let socket: Socket
 
 export const getServerSideProps = async () => {
   return {
@@ -13,37 +15,47 @@ export const getServerSideProps = async () => {
 
 const Home = ({ id }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [domain, setDomain] = useState('')
-  const [isChecking, setIsChecking] = useState(true)
+  const [isConnected, setIsConnected] = useState(0)
 
-  const check = async () => {
-    if (!isChecking) return
-    const req = await fetch('/api/' + id)
-    const data = await req.json()
-    if (data.url) window.location = data.url
+  const connect = async () => {
+    await fetch('/api/socket')
+    socket = io()
+
+    socket.on('connect', () => {
+      setIsConnected(1)
+    })
+    socket.on('disconnect', () => {
+      setIsConnected(2)
+    })
+    socket.on(id, (arg) => {
+      window.location = arg
+    })
   }
 
   useEffect(() => {
     setDomain(window.location.href)
-    const timeout = setTimeout(() => setIsChecking(false), 60000)
-    const update = setInterval(check, 5000)
+    connect()
+
     return () => {
-      clearInterval(update)
-      clearTimeout(timeout)
+      socket?.removeAllListeners()
     }
-  }, [isChecking])
+  }, [])
 
   return (
     <div className='text-slate-700'>
-      {isChecking && (
+      {isConnected === 1 && (
         <div className='flex flex-col items-center'>
-          <span className='text-4xl font-bold m-8 mb-12'>Scan The QR Code</span>
+          <span className='text-3xl sm:text-4xl font-bold m-8 mb-12'>Scan The QR Code</span>
           {domain && <QRCode value={domain + id} />}
+          <span className='text-xl text-center w-3/4 font-medium mt-4'>
+            Scan this qr code on your phone to send a URL to this device
+          </span>
         </div>
       )}
-      {!isChecking && (
+      {isConnected === 2 && (
         <div className='flex flex-col items-center'>
-          <span className='text-4xl font-bold m-8 mb-12'>QR Code Expired</span>
-          <div onClick={() => setIsChecking(true)} className='cursor-pointer'>
+          <span className='text-4xl font-bold m-8 mb-12'>Connection Lost</span>
+          <div onClick={connect} className='cursor-pointer'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               fill='none'
@@ -58,6 +70,7 @@ const Home = ({ id }: InferGetServerSidePropsType<typeof getServerSideProps>) =>
                 d='M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99'
               />
             </svg>
+            <span className='texl-xl font-medium'>Reconnect</span>
           </div>
         </div>
       )}

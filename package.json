@@ -1,6 +1,6 @@
 {
   "name": "reverse-qr",
-  "version": "0.1.0",
+  "version": "1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,12 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "ioredis": "^5.2.3",
     "nanoid": "^4.0.0",
     "next": "12.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-qr-code": "^2.0.8",
+    "socket.io": "^4.5.3",
+    "socket.io-client": "^4.5.3",
     "zod": "^3.19.1"
   },
   "devDependencies": {

@@ -12,7 +12,7 @@ const ID: NextPage = () => {
   const sendURL = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
-      await fetch('/api/send', {
+      await fetch('/api/socket', {
         method: 'POST',
         body: JSON.stringify({ id: id, url: url }),
       })
@@ -26,7 +26,7 @@ const ID: NextPage = () => {
     <div className='text-slate-700'>
       {status === 0 && (
         <div className='flex flex-col items-center'>
-          <span className='text-4xl font-bold m-10'>Enter the URL</span>
+          <span className='text-4xl font-bold m-10'>Enter a URL</span>
           <form onSubmit={sendURL} className='w-full flex flex-col items-center'>
             <input
               type='url'
