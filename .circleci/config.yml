@@ -1,0 +1,26 @@
+version: 2.1
+
+workflows:
+  on_commit:
+    jobs:
+      - build_deploy
+
+jobs:
+  build_deploy:
+    machine:
+      image: ubuntu-2004:current
+      resource_class: arm.medium
+    steps:
+      - checkout
+      - run:
+          name: Build docker image
+          command: docker build -t ulassekerci/reverse-qr:latest .
+      - run:
+          name: Login to registry
+          command: docker login -u ulassekerci -p $GIT_PAT ghcr.io
+      - run:
+          name: Tag image
+          command: docker tag ulassekerci/reverse-qr:latest ghcr.io/ulassekerci/reverse-qr:latest
+      - run:
+          name: Push image
+          command: docker push ghcr.io/ulassekerci/reverse-qr:latest
