@@ -42,14 +42,24 @@ const Home = ({ id }: InferGetServerSidePropsType<typeof getServerSideProps>) =>
   }, [])
 
   return (
-    <div className='text-slate-700'>
+    <div className='text-slate-700 max-w-4xl mx-auto mt-9'>
       {isConnected === 1 && (
-        <div className='flex flex-col items-center'>
-          <span className='text-3xl sm:text-4xl font-bold m-8 mb-12'>Scan The QR Code</span>
-          {domain && <QRCode value={domain + id} />}
-          <span className='text-xl text-center w-3/4 font-medium mt-4'>
-            Scan this qr code on your phone to send a URL to this device
-          </span>
+        <div className='flex flex-col'>
+          <h1 className='text-slate-800 text-4xl font-bold'>Reverse QR</h1>
+          <div className='flex mt-9 justify-between items-center'>
+            <div className='flex flex-col gap-9'>
+              <span className='text-2xl font-semibold text-slate-700 w-80'>
+                Easily send URLs from your phone to a computer with just a QR code
+              </span>
+              <ul className='text-lg font-medium text-slate-600'>
+                <span>Instructions:</span>
+                <li>1. Scan the QR code</li>
+                <li>2. Enter the URL</li>
+                <li>3. Press send</li>
+              </ul>
+            </div>
+            {domain && <QRCode value={domain + id} size={280} />}
+          </div>
         </div>
       )}
       {isConnected === 2 && (

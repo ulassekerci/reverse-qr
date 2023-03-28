@@ -23,11 +23,12 @@ const ID: NextPage = () => {
   }
 
   return (
-    <div className='text-slate-700'>
+    <div className='text-slate-700 max-w-sm mx-auto px-4'>
       {status === 0 && (
-        <div className='flex flex-col items-center'>
-          <span className='text-4xl font-bold m-10'>Enter a URL</span>
-          <form onSubmit={sendURL} className='w-full flex flex-col items-center'>
+        <div className='mt-7'>
+          <h1 className='text-4xl font-bold text-slate-700'>Hi!</h1>
+          <span className='text-lg font-medium text-slate-600 mt-2 block'>Enter any url and press send</span>
+          <form onSubmit={sendURL} className='flex flex-col items-center mt-10'>
             <input
               type='url'
               required
@@ -35,23 +36,23 @@ const ID: NextPage = () => {
               onChange={(e) => {
                 setURL(e.target.value)
               }}
-              placeholder='https://aws.amazon.com'
-              className='w-3/4 h-12 p-2 bg-gray-200 rounded'
+              placeholder='https://example.com'
+              className='w-full h-12 p-3 bg-slate-200 rounded-lg'
             />
-            <button className='bg-blue-400 text-white font-medium w-3/4 h-12 m-4 rounded'>Send</button>
+            <button className='bg-slate-700 text-white font-medium w-full h-12 m-4 rounded-lg'>Send</button>
           </form>
         </div>
       )}
       {status === 1 && (
         <div className='flex flex-col items-center'>
-          <span className='text-4xl font-bold m-6 mt-16'>URL Sent</span>
-          <span className='text-xl font-bold'>you can close this tab</span>
+          <span className='text-5xl font-bold m-6 mt-16'>URL Sent</span>
+          <span className='text-xl font-bold'>You can close this page</span>
         </div>
       )}
       {status === 2 && (
         <div className='flex flex-col items-center'>
           <span className='text-4xl font-bold m-6 mt-16'>An Error Ocurred</span>
-          <span className='text-xl font-bold'>try sending again</span>
+          <span className='text-xl font-bold'>Try sending again</span>
         </div>
       )}
     </div>
